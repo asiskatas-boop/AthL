@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 type Mode =
   | 'bar'
@@ -45,20 +45,6 @@ interface Burst {
 const INK = '#1C1917';
 const UMBER = '#78350F';
 
-const MODE_LABELS: Record<Mode, string> = {
-  bar: 'Material field',
-  rings: 'Concentric archive',
-  nestedSquares: 'Nested register',
-  squareGrid: 'Catalogue matrix',
-  wave: 'Signal trace',
-  dotGrid: 'Index field',
-  dashed: 'Interrupted line',
-  verticalLines: 'Vertical register',
-  horizontalLines: 'Horizontal register',
-  circleChain: 'Linked objects',
-  zigzag: 'Fault line',
-  portrait: 'Fragmented portrait',
-};
 
 const MODES: Mode[] = [
   'bar',
@@ -80,7 +66,6 @@ export const GenerativeHeader = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const changePatternRef = useRef<() => void>(() => undefined);
   const burstRef = useRef<() => void>(() => undefined);
-  const [patternLabel, setPatternLabel] = useState(MODE_LABELS.bar);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -418,7 +403,6 @@ export const GenerativeHeader = () => {
       else if (mode === 'zigzag') createZigzag();
       else createPortrait();
 
-      setPatternLabel(MODE_LABELS[nextMode]);
       draw();
     };
 
@@ -740,70 +724,47 @@ export const GenerativeHeader = () => {
   }, []);
 
   return (
-    <section
-      aria-labelledby="generative-art-title"
-      className="border-b border-[#1C1917]/10 bg-[#FAF8F5] py-5 sm:py-7 lg:py-8"
-    >
+    <section className="border-b border-[#1C1917]/10 bg-[#FAF8F5] py-4 sm:py-5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-4 sm:gap-5">
-          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-[#1C1917]/10 pb-4">
-            <div className="min-w-0">
-              <p
-                id="generative-art-title"
-                className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#78716C]"
-              >
-                Interactive plate · Generative study
-              </p>
-              <p className="mt-1 font-serif text-xl sm:text-2xl leading-none text-[#1C1917]">
-                Material response field
-              </p>
-            </div>
+        <div
+          ref={stageRef}
+          className="relative overflow-hidden border border-[#1C1917]/12 bg-[#F4EFE6] cursor-crosshair touch-pan-y"
+          aria-label="Interactive generative artwork"
+        >
+          <canvas
+            ref={canvasRef}
+            className="block h-[clamp(300px,38vw,430px)] w-full"
+            aria-hidden="true"
+          />
 
-            <div className="flex flex-wrap items-center gap-2" aria-label="Artwork controls">
-              <button
-                type="button"
-                onClick={() => changePatternRef.current()}
-                className="min-h-11 inline-flex items-center justify-center border border-[#1C1917]/25 bg-[#FAF8F5] px-4 py-2 text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-[#1C1917] transition-colors hover:border-[#78350F] hover:text-[#78350F] active:bg-[#F4EFE6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78350F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF8F5]"
-                aria-label="Change generative pattern"
-              >
-                Pattern
-              </button>
-              <button
-                type="button"
-                onClick={() => burstRef.current()}
-                className="min-h-11 inline-flex items-center justify-center bg-[#1C1917] px-4 py-2 text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-[#FAF8F5] transition-colors hover:bg-[#78350F] active:bg-[#5D290B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78350F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF8F5]"
-                aria-label="Send a burst through the generative artwork"
-              >
-                Burst
-              </button>
-            </div>
-          </div>
+          <div className="absolute right-3 top-3 z-10 flex gap-2 sm:right-4 sm:top-4">
+            <button
+              type="button"
+              onClick={() => changePatternRef.current()}
+              className="grid h-11 w-11 place-items-center border border-[#1C1917]/20 bg-[#FAF8F5]/90 text-[#1C1917] backdrop-blur-sm transition-colors hover:border-[#78350F] hover:text-[#78350F] active:bg-[#F4EFE6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78350F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EFE6]"
+              aria-label="Change generative pattern"
+              title="Change pattern"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="6" height="6" />
+                <rect x="14.5" y="3.5" width="6" height="6" />
+                <rect x="3.5" y="14.5" width="6" height="6" />
+                <rect x="14.5" y="14.5" width="6" height="6" />
+              </svg>
+            </button>
 
-          <div
-            ref={stageRef}
-            className="relative overflow-hidden border border-[#1C1917]/12 bg-[#F4EFE6] cursor-crosshair touch-pan-y"
-            aria-describedby="generative-art-instructions"
-          >
-            <canvas
-              ref={canvasRef}
-              className="block h-[clamp(290px,38vw,430px)] w-full"
-              aria-hidden="true"
-            />
-
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-center justify-between gap-2 border-t border-[#1C1917]/10 bg-[#F4EFE6]/90 px-3 py-2 backdrop-blur-[2px] sm:px-4">
-              <span
-                id="generative-art-instructions"
-                className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.16em] text-[#57534E]"
-              >
-                Move to repel · press and drag to pull · tap to disrupt
-              </span>
-              <span
-                className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.16em] text-[#78350F]"
-                aria-live="polite"
-              >
-                {patternLabel}
-              </span>
-            </div>
+            <button
+              type="button"
+              onClick={() => burstRef.current()}
+              className="grid h-11 w-11 place-items-center bg-[#1C1917] text-[#FAF8F5] transition-colors hover:bg-[#78350F] active:bg-[#5D290B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78350F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EFE6]"
+              aria-label="Send a burst through the generative artwork"
+              title="Burst"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
+                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.64 5.64l2.12 2.12M16.24 16.24l2.12 2.12M18.36 5.64l-2.12 2.12M7.76 16.24l-2.12 2.12" />
+                <circle cx="12" cy="12" r="3.25" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

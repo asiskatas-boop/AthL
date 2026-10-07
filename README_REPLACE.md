@@ -1,24 +1,16 @@
-# AthL interactive header drop-in
+AthL interactive element — drop-in replacement
 
-Replace exactly these two files in the repository:
+Replace exactly these files in your GitHub repo:
+1. src/App.tsx
+2. src/components/GenerativeHeader.tsx
 
-1. `src/App.tsx`
-2. `src/components/GenerativeHeader.tsx`
+What this version does:
+- Keeps the existing AthL Navbar first.
+- Places the interactive generative artwork directly beneath it.
+- Removes all visible headings, instructions, pattern names, and explanatory copy from the artwork.
+- Keeps two compact icon-only controls over the artwork: change pattern and burst.
+- Keeps pointer/touch interaction, pattern generation, drag attraction, repulsion, bursts, responsive canvas sizing, and reduced-motion handling.
 
-No package changes are required.
+Do NOT replace the repo root index.html with the standalone preview HTML. The repo is a React/Vite app; the TSX files above are the production integration.
 
-## What changes
-
-- The existing sticky `Navbar` is rendered first.
-- The interactive generative artwork is rendered immediately beneath it.
-- The duplicate AthLasith header and duplicate CV/inquiry/search controls are removed from the artwork component.
-- The artwork now uses the site's warm archival design language: `#FAF8F5`, `#F4EFE6`, `#1C1917`, and `#78350F`.
-- Interaction remains rich: pointer repulsion, press/drag attraction, tap/burst disruption, twelve pattern families, responsive high-DPI canvas rendering, and reduced-motion support.
-- Pattern and Burst controls remain accessible without drag gestures and use 44px minimum target height.
-
-## Verification performed
-
-- `GenerativeHeader.tsx`: TypeScript type check against ES2022 + DOM APIs passed using the repository's compiler style.
-- `App.tsx` and `GenerativeHeader.tsx`: TSX transpilation passed.
-
-A full repository-wide Vite build was not run because this execution environment cannot clone/install the GitHub repository dependencies directly.
+AthL-interactive-element.html is only a standalone browser preview of the element itself.
