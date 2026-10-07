@@ -701,7 +701,7 @@ export const GenerativeHeader = () => {
     canvas.width = Math.round(W * DPR);
     canvas.height = Math.round(H * DPR);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    buildArtwork('bar');
+    buildArtwork(MODES[Math.floor(Math.random() * MODES.length)]);
 
     if (!prefersReducedMotion) {
       animId = requestAnimationFrame(animate);
