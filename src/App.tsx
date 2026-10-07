@@ -2,8 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { GenerativeHeader } from './components/GenerativeHeader';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -31,20 +30,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#1C1917] selection:bg-[#E8E2D5] selection:text-[#1C1917]">
-      {/* Generative Interactive Header from HTML with AthLasith name */}
-      <GenerativeHeader
-        onOpenInquiry={() => setIsInquiryOpen(true)}
-        onOpenDossier={() => setIsDossierOpen(true)}
-        onSearchClick={handleExploreProjects}
-      />
-
-      {/* Sticky Secondary Navigation Bar */}
+      {/* Primary site navigation stays first and sticky. */}
       <Navbar
         onOpenInquiry={() => setIsInquiryOpen(true)}
         onOpenDossier={() => setIsDossierOpen(true)}
       />
 
       <main className="flex-1">
+        {/* Interactive archival plate: deliberately placed directly beneath navigation. */}
+        <GenerativeHeader />
+
         {/* Curatorial Statement & Hero */}
         <HeroSection
           onOpenInquiry={() => setIsInquiryOpen(true)}
